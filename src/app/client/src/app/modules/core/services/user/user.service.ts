@@ -206,7 +206,9 @@ export class UserService {
     hashTagIds.push(this._channel);
     let organisationIds = [];
     if (profileData.rootOrgId) {
-      organisationIds.push(profileData.rootOrgId);
+    // SL Ticket 971 - Don't push Root OrgId to orgrole map
+    //  organisationIds.push(profileData.rootOrgId);
+    // SL Ticket 971
     }
     profileData.rootOrgAdmin = false;
     let userRoles = ['PUBLIC'];

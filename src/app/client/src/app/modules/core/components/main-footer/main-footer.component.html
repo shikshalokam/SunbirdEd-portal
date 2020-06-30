@@ -7,11 +7,23 @@
         <ul class="p-0 m-0" *ngIf="!(tenantFooter | keyvalue)?.length">
           <li class="mb-16">
             <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('help-center')"
-              href="{{defaultFooterConfig.helpCenterLink}}">
+              href="https://shikshalokam.org/wp-content/uploads/2019/01/data_privacy_policy.html" target="blank">
+              Data & Privacy Policy
+            </a>
+          </li>
+          <li class="mb-16">
+            <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('help-center')"
+              href="https://shikshalokam.org/wp-content/uploads/2019/05/GRO.html" target="blank">
+              Grievance Redressal Process
+            </a>
+          </li>
+          <li class="mb-16">
+            <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('help-center')"
+              href="{{defaultFooterConfig.helpCenterLink}}" target="blank">
               {{resourceService.frmelmnts?.lnk?.footerHelpCenter}}
             </a>
           </li>
-          <li>
+          <!-- <li>
             <label class="d-block mb-0">
               {{resourceService.frmelmnts?.lnk?.footerContact}}
             </label>
@@ -19,7 +31,7 @@
               class="d-block mb-0" href="mailto:{{defaultFooterConfig.helpDeskEmail}}">
               {{defaultFooterConfig.helpDeskEmail}}
             </a>
-          </li>
+          </li> -->
         </ul>
 
         <ul class="p-0 m-0" *ngIf="(tenantFooter | keyvalue)?.length">
@@ -53,22 +65,34 @@
             class="d-block text-center">{{resourceService?.frmelmnts?.lbl?.downloadDikshaForMobile | interpolate:'{instance}': instance}}</label>
           <a class="d-block app-download" (click)="redirectToMobileApp()">
             <img class="playStore-img" src="/assets/images/google_playstore.png"
-              alt="{{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile | interpolate:'{instance}':  instance}}">
+              alt="{{resourceService.frmelmnts?.lnk?.footerDIKSHAForMobile | interpolate:'{instance}':  'Bodh'}}">
           </a>
           <p class="d-block pt-10">{{resourceService.frmelmnts?.lbl?.getUnlimitedAccess}}</p>
         </div>
       </div>
       <div class="four wide column contantDetails">
+        <ul>
+          <li>
+            <label class="d-block mb-0">
+              {{resourceService.frmelmnts?.lnk?.footerContact}}
+            </label>
+            <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('fresh-desk')"
+              class="d-block mb-0" href="mailto:{{defaultFooterConfig.helpDeskEmail}}">
+              {{defaultFooterConfig.helpDeskEmail}}
+            </a>
+          </li>
+        </ul>
         <label class="d-block mb-16">
-          <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')" href="/term-of-use.html">
+          <a appTelemetryInteract [telemetryInteractEdata]="setTelemetryInteractEdata('t&c')" target="blank"
+          href="https://shikshalokam.org/wp-content/uploads/2019/05/Final-ShikshaLokam-Terms-of-Use-MCM-08052019-Clean-copy-1.html">
             {{resourceService.frmelmnts?.lnk?.footerTnC}}
           </a>
-          <span>| &copy; {{date | date:'yyyy'}}, {{instance}}</span>
+          <span>| &copy; {{date | date:'yyyy'}}, Shikshalokam</span>
         </label>
-        <label class="sb-footer-license">
+        <!-- <label class="sb-footer-license">
           <img src="/assets/images/CCby.svg">
           <span>{{resourceService.frmelmnts?.lbl?.CCbyLicense}}</span>
-        </label>
+        </label> -->
       </div>
     </div>
   </div>

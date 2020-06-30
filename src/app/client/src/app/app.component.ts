@@ -96,8 +96,9 @@ export class AppComponent implements OnInit, OnDestroy {
     public formService: FormService, private programsService: ProgramsService,
     @Inject(DOCUMENT) private _document: any, public sessionExpiryInterceptor: SessionExpiryInterceptor,
     public changeDetectorRef: ChangeDetectorRef) {
+    //Shikshalokam Change
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
-      ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
+      ? (<HTMLInputElement>document.getElementById('instance')).value : 'shikshalokam';
   }
   /**
    * dispatch telemetry window unload event before browser closes

@@ -37,10 +37,11 @@
                             <a class="item" routerLink="profile">
                                 {{resourceService.frmelmnts?.lnk?.profile}}
                             </a>
-                            <a class="item" *ngIf='permissionService.permissionAvailable' appPermission
+                            <!-- Shikshalokam Change -->
+                            <!-- <a class="item" *ngIf='permissionService.permissionAvailable' appPermission
                                 [permission]='adminDashboard' routerLink="dashBoard/organization">
-                                {{resourceService.frmelmnts?.lnk?.dashboard}}
-                            </a>
+                                {{resourceService.frmelmnts?.lnk?.dashboard}} hiiii
+                            </a> -->
 
                             <!-- <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='myActivityRole'
                   routerLink="dashBoard/myActivity">
@@ -56,10 +57,11 @@
                             <!-- <a class="item" *ngIf='permissionService.permissionAvailable' appPermission [permission]='orgAdminRole' routerLink="/org/userUpload">
                             {{resourceService.frmelmnts?.lbl?.manageuser}}
                           </a> -->
-                            <a class="item" *ngIf='permissionService.permissionAvailable' appPermission
+                          <!-- Shikshalokam Change -->
+                            <!-- <a class="item" *ngIf='permissionService.permissionAvailable' appPermission
                                 [permission]='orgAdminRole' routerLink="manage">
                                 {{resourceService.frmelmnts?.lbl?.manage}}
-                            </a>
+                            </a> -->
                             <a class="item" appTelemetryInteract [telemetryInteractEdata]="getLogoutInteractEdata()"
                                 (click)="logout()">
                                 {{resourceService.frmelmnts?.lnk?.logout}}

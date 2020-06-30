@@ -42,9 +42,10 @@ export class MainFooterComponent implements OnInit, AfterViewInit {
     this.tenantService.tenantSettings$.subscribe((data) => {
       this.tenantFooter = data;
     });
+    // Shikshalokam Change
     this.defaultFooterConfig = {
-      helpCenterLink: '/help/getting-started/explore-' + _.lowerCase(this.instance) + '/index.html',
-      helpDeskEmail: 'support@' + _.lowerCase(this.instance) + '-ncte.freshdesk.com'
+      helpCenterLink: 'https://wiki.shikshalokam.org/',
+      helpDeskEmail: 'info@shikshalokam.org'
     };
   }
  ngAfterViewInit() {

@@ -20,7 +20,7 @@
     "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue",
     sans-serif;
 
-  --blue: #024f9d;
+  --blue: #832215;
   --black: #000000;
   --green: #008840;
   --orange: #e55a28;
@@ -33,6 +33,8 @@
   --yellow: #ffc107;
   --teal: #20c997;
   --cyan: #17a2b8;
+  --slbrown: #832215;
+  --slgreen: #6fb42d;
 
   --gray-hs: 0, 0%;
   --gray: hsl(var(--gray-hs), 20%);
@@ -46,8 +48,8 @@
   --gray-400: hsl(var(--gray-hs), 40%); // sub heading #666666
   --gray-800: var(--gray); // text color #333333
 
-  --primary-color: var(--blue);
-  --secondary-color: var(--green);
+  --primary-color: var(--slbrown);
+  --secondary-color: var(--slgreen);
   --tertiary-color: var(--orange);
 
   --primary-0: #f3f7fa; // bg
