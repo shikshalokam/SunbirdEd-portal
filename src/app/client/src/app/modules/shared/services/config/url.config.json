@@ -17,6 +17,7 @@
     "DEVICE_PREFIX": "/device/",
     "CERT_REG_PREFIX": "/certreg/",
     "CONTENT_PREFIX": "/content/",
+    "SHIKSHALOKAM_PREFIX":"/shikshalokam/",
     "REPORT_PREFIX": "/report",
     "ELECTRON_DIALOG_PREFIX": "/dialog/",
     "PUBLIC_PREFIX": "/api/",

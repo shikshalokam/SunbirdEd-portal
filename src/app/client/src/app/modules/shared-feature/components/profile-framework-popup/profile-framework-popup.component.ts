@@ -53,6 +53,11 @@ export class ProfileFrameworkPopupComponent implements OnInit, OnDestroy {
         }
       }), first()).subscribe(data => {
         this.formFieldOptions = data;
+        let selectedBoards = {}
+        for (const field of this.formFieldOptions) {
+          selectedBoards[field.code] = (field.range && field.range.length) ? [field.range[0].identifier] : []
+        }
+        this.submit.emit(selectedBoards);
       }, err => {
         this.toasterService.warning(this.resourceService.messages.emsg.m0012);
         this.navigateToLibrary();

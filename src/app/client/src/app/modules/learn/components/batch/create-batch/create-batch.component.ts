@@ -3,12 +3,13 @@ import { takeUntil, mergeMap } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RouterNavigationService, ResourceService, ToasterService, ServerResponse, NavigationHelperService } from '@sunbird/shared';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { UserService } from '@sunbird/core';
+import { UserService, SlUtilsService } from '@sunbird/core';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
 import { IImpressionEventInput, IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
 import * as dayjs from 'dayjs';
 import { Subject, combineLatest } from 'rxjs';
+
 @Component({
   selector: 'app-create-batch',
   templateUrl: './create-batch.component.html'
@@ -105,7 +106,8 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     courseBatchService: CourseBatchService,
     toasterService: ToasterService,
     courseConsumptionService: CourseConsumptionService,
-    public navigationhelperService: NavigationHelperService) {
+    public navigationhelperService: NavigationHelperService,
+    private slUtils: SlUtilsService) {
     this.resourceService = resourceService;
     this.router = route;
     this.activatedRoute = activatedRoute;
@@ -257,6 +259,16 @@ export class CreateBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     };
     this.courseBatchService.addUsersToBatch(userRequest, batchId).pipe(takeUntil(this.unsubscribe))
       .subscribe((res) => {
+        // Shikshalokam change
+        const payload = {
+          batchId: batchId,
+          userIds: userRequest.userIds,
+          courseId: this.courseId
+        };
+        this.slUtils.syncBatchApi(payload).subscribe(success => {
+        },error => {
+        })
+        // ==================================== //
         this.disableSubmitBtn = false;
         this.toasterService.success(this.resourceService.messages.smsg.m0033);
         this.reload();

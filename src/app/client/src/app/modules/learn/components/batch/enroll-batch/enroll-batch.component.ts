@@ -1,6 +1,6 @@
 
 import { takeUntil } from 'rxjs/operators';
-import { UserService, CoursesService } from '@sunbird/core';
+import { UserService, CoursesService, SlUtilsService } from '@sunbird/core';
 import { ResourceService, ToasterService, ConfigService, NavigationHelperService } from '@sunbird/shared';
 import { CourseBatchService } from './../../../services';
 import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
@@ -32,6 +32,7 @@ export class EnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     public resourceService: ResourceService, public toasterService: ToasterService, public userService: UserService,
     public configService: ConfigService, public coursesService: CoursesService,
     private telemetryService: TelemetryService,
+    private slUtils: SlUtilsService,
     public navigationhelperService: NavigationHelperService) { }
 
   ngOnInit() {
@@ -95,6 +96,14 @@ export class EnrollBatchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.courseBatchService.enrollToCourse(request).pipe(
       takeUntil(this.unsubscribe))
       .subscribe((data) => {
+        const payload = {
+          batchId: this.batchDetails.identifier,
+          userIds: [this.userService.userid],
+          courseId: this.batchDetails.courseId
+        }
+        this.slUtils.syncBatchApi(payload).subscribe(success => {
+        }, error => {
+        })
         this.disableSubmitBtn = true;
         this.fetchEnrolledCourseData();
         this.telemetryLogEvents(true);

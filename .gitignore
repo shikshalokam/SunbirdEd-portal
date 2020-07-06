@@ -14,3 +14,4 @@ mochawesome-report
 .idea
 /src/app/helpers/devConfig.js
 /.vscode/launch.json
+/src/app/client/src/app/modules/core/services/sl-utils/slConfig.ts

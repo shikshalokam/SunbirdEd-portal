@@ -8,7 +8,7 @@ import {
 import { Component, HostListener, OnInit, ViewChild, Inject, OnDestroy, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import {
   UserService, PermissionService, CoursesService, TenantService, OrgDetailsService, DeviceRegisterService,
-  SessionExpiryInterceptor, FormService, ProgramsService
+  SessionExpiryInterceptor, FormService, ProgramsService, SlUtilsService
 } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { ProfileService } from '@sunbird/profile';
@@ -95,7 +95,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private profileService: ProfileService, private toasterService: ToasterService, public utilService: UtilService,
     public formService: FormService, private programsService: ProgramsService,
     @Inject(DOCUMENT) private _document: any, public sessionExpiryInterceptor: SessionExpiryInterceptor,
-    public changeDetectorRef: ChangeDetectorRef) {
+    public changeDetectorRef: ChangeDetectorRef, private slUtils: SlUtilsService) {
     //Shikshalokam Change
     this.instance = (<HTMLInputElement>document.getElementById('instance'))
       ? (<HTMLInputElement>document.getElementById('instance')).value : 'shikshalokam';
@@ -123,6 +123,9 @@ export class AppComponent implements OnInit, OnDestroy {
       });
   }
   ngOnInit() {
+    this.slUtils.getAllOrganizations().subscribe(success => {
+    }, error => {
+    })
     this.didV2 = (localStorage && localStorage.getItem('fpDetails_v2')) ? true : false;
     const queryParams$ = this.activatedRoute.queryParams.pipe(
       filter(queryParams => queryParams && queryParams.clientId === 'android' && queryParams.context),

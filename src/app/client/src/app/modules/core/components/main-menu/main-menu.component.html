@@ -3,7 +3,7 @@
 	<!--Logged in user-->
 	<ng-container *ngIf="userService.loggedIn">
 		<a class="item py-8 pl-0 pr-24" [class.active]="router.isActive('/search/Library') || router.isActive('/resources')"
-			appTelemetryInteract [telemetryInteractEdata]="libraryMenuIntractEdata" routerLink="/resources">
+			appTelemetryInteract [telemetryInteractEdata]="libraryMenuIntractEdata" routerLink="/search/Library/1" [queryParams]="{ appliedFilters: false }">
 			{{resourceService?.frmelmnts?.tab?.resources}}
 		</a>
 		<a class="item py-8 pl-0 pr-24" [class.active]="router.isActive('/search/Courses') || router.isActive('/learn')"

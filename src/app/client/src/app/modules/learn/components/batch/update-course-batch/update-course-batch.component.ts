@@ -6,7 +6,7 @@ import {combineLatest, Subject, forkJoin} from 'rxjs';
 import { takeUntil, mergeMap } from 'rxjs/operators';
 import { RouterNavigationService, ResourceService, ToasterService, ServerResponse, NavigationHelperService } from '@sunbird/shared';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { UserService } from '@sunbird/core';
+import { UserService, SlUtilsService } from '@sunbird/core';
 import { CourseConsumptionService, CourseBatchService } from './../../../services';
 import { IImpressionEventInput, IInteractEventObject } from '@sunbird/telemetry';
 import * as _ from 'lodash-es';
@@ -126,7 +126,8 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
     courseBatchService: CourseBatchService,
     toasterService: ToasterService,
     courseConsumptionService: CourseConsumptionService,
-    public navigationhelperService: NavigationHelperService) {
+    public navigationhelperService: NavigationHelperService,
+    private slUtils: SlUtilsService) {
     this.resourceService = resourceService;
     this.router = route;
     this.activatedRoute = activatedRoute;
@@ -506,6 +507,7 @@ export class UpdateCourseBatchComponent implements OnInit, OnDestroy, AfterViewI
     }
 
     forkJoin(requests).subscribe(results => {
+      
       this.disableSubmitBtn = false;
       this.toasterService.success(this.resourceService.messages.smsg.m0034);
       this.reload();

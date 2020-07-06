@@ -52,16 +52,16 @@
   --secondary-color: var(--slgreen);
   --tertiary-color: var(--orange);
 
-  --primary-0: #f3f7fa; // bg
-  --primary-100: #edf4f9; // default button bg
-  --primary-200: #80a7ce; // divider
-  --primary-250: #d3e7f4; //pagination bg color
-  --primary-300: #7ab4ee; // outline, focus fields
+  --primary-0: #f3edee; // bg
+  --primary-100: #f1eaea; // default button bg
+  --primary-200: #d2908d; // divider
+  --primary-250: #d2908d; //pagination bg color
+  --primary-300: #d2908d; // outline, focus fields
   --primary-400: var(
     --primary-color
   ); // button bg, heading, table titles, links, toggles
-  --primary-600: #005391; // on press
-  --primary-800: #002e50; // hover
+  --primary-600: #b13528; // on press
+  --primary-800: #93281d; // hover
 
   --secondary-0: #e1ffdf; // toast bg, label
   --secondary-100: #00c786; // buttong bg, toast
