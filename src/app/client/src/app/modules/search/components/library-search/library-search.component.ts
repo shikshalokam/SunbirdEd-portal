@@ -116,9 +116,9 @@ export class LibrarySearchComponent implements OnInit, OnDestroy, AfterViewInit 
           facets: this.facets,
           params: this.configService.appConfig.ExplorePage.contentApiQueryParams || {}
         };
-        if (this.frameworkId) {
-          option.params.framework = this.frameworkId;
-        }
+        // if (this.frameworkId) {
+        //   option.params.framework = this.frameworkId;
+        // }
         this.searchService.contentSearch(option)
             .subscribe(data => {
                 this.showLoader = false;

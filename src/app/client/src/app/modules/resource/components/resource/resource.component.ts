@@ -43,6 +43,7 @@ export class ResourceComponent implements OnInit, OnDestroy, AfterViewInit {
     public telemetryService: TelemetryService, private utilService: UtilService) {
   }
   ngOnInit() {
+    this.router.navigate(['/search/Library/1'], { queryParams: { appliedFilters: 'false' } });
     if (this.userService.userProfile.framework) {
       const userFrameWork = _.pick(this.userService.userProfile.framework, ['medium', 'gradeLevel', 'board']);
       this.defaultFilters = { ...this.defaultFilters, ...userFrameWork, };
