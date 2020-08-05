@@ -307,7 +307,8 @@ export class UserService {
   get orgIdNameMap() {
     const mapOrgIdNameData = {};
     _.forEach(this.orgnisationsDetails, (orgDetails) => {
-      mapOrgIdNameData[orgDetails.identifier] = orgDetails.orgName;
+      // mapOrgIdNameData[orgDetails.identifier] = orgDetails.orgName;
+      mapOrgIdNameData[orgDetails.id] = orgDetails.orgName;
     });
     return mapOrgIdNameData;
   }
