@@ -4,10 +4,12 @@ let BASE_URL = "https://api.shikshalokam.org";
 if(pageUrl.includes('qa')){
     BASE_URL = "https://qa.bodh.shikshalokam.org"
 }
+if(pageUrl.includes('staging')){
+    BASE_URL = "https://staging.bodh.shikshalokam.org"
+}
 if(pageUrl.includes('localhost:3000') || pageUrl.includes('dev')){
     BASE_URL = "https://dev.bodh.shikshalokam.org"
 }
-alert(BASE_URL);
 export const slConfig = {
     BASE_URL: BASE_URL,
     API_URL: {
