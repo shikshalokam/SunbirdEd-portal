@@ -28,9 +28,9 @@ export class ContentRatingComponent implements OnInit, OnDestroy {
    */
   private toasterService: ToasterService;
   private telemetryService: TelemetryService;
-    /**
-   * To get url params
-   */
+  /**
+ * To get url params
+ */
   public activatedRoute: ActivatedRoute;
   contentRating: number;
   enableSubmitBtn: boolean;
@@ -41,7 +41,7 @@ export class ContentRatingComponent implements OnInit, OnDestroy {
   *@param {ResourceService} SearchService Reference of SearchService
   */
   constructor(resourceService: ResourceService, toasterService: ToasterService, public formService: FormService,
-    telemetryService: TelemetryService ,  activatedRoute: ActivatedRoute) {
+    telemetryService: TelemetryService, activatedRoute: ActivatedRoute) {
     this.resourceService = resourceService;
     this.toasterService = toasterService;
     this.telemetryService = telemetryService;
@@ -60,7 +60,7 @@ export class ContentRatingComponent implements OnInit, OnDestroy {
         (formResponsedata) => {
           this.feedbackObj = formResponsedata[0];
         }, (error) => {
-          this.feedbackObj = { };
+          this.feedbackObj = {};
         });
     });
   }
@@ -90,30 +90,68 @@ export class ContentRatingComponent implements OnInit, OnDestroy {
           env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env')
         },
         object: {
-          id: _.get(this.activatedRoute.snapshot.params, 'contentId') ||  _.get(this.activatedRoute.snapshot.params, 'collectionId') ||
-          _.get(this.activatedRoute.snapshot.params, 'courseId'),
-          type: _.get(this.contentData , 'contentType'),
-          ver: this.contentData ? _.get(this.contentData , 'pkgVersion').toString() : '1.0'
+          id: _.get(this.activatedRoute.snapshot.params, 'contentId') || _.get(this.activatedRoute.snapshot.params, 'collectionId') ||
+            _.get(this.activatedRoute.snapshot.params, 'courseId'),
+          type: _.get(this.contentData, 'contentType'),
+          ver: this.contentData ? _.get(this.contentData, 'pkgVersion').toString() : '1.0'
         },
-        edata: { }
+        edata: {}
       };
+      const commentsList = [];
+      const commentDescription = [];
       _.forEach(this.feedbackObj[this.contentRating]['options'], (feedback) => {
         if (feedback['checked']) {
           const feedbackTelemetryClone = _.clone(feedbackTelemetry);
-          feedbackTelemetryClone['edata'] = { };
+          feedbackTelemetryClone['edata'] = {};
           feedbackTelemetryClone['edata']['commentid'] = feedback['key'];
+          commentsList.push(feedback['key'])
           if (feedback['key'] === 'OTHER') {
             feedbackTelemetryClone['edata']['commenttxt'] = this.feedbackText;
+            commentDescription.push(this.feedbackText);
           } else {
             feedbackTelemetryClone['edata']['commenttxt'] = feedback['value'];
+            commentDescription.push(feedback['value']);
           }
           console.log(feedbackTelemetryClone);
           this.telemetryService.feedback(feedbackTelemetryClone);
         }
       });
       feedbackTelemetry['edata'] = {
-        rating: this.contentRating
+        rating: this.contentRating,
+        commentid: commentsList.toString(),
+        commenttxt: commentDescription.toString(),
+        subtype: "rating-submitted",
+        values: [
+          {
+            "Ratings": this.contentRating,
+            "Comment": commentsList.toString(),
+            "commenttxt": commentDescription.toString()
+          }
+        ]
       };
+      const interactObj = {
+        "context": {
+          "cdata": [],
+          "env": _.get(this.activatedRoute.snapshot.data.telemetry, 'env'),
+        },
+        "edata": {
+          "type": "TOUCH",
+          "subtype": "rating-submitted",
+          "id": "content-detail",
+          "pageid": "content-detail",
+          "extra": {
+            "pos": [],
+            "values": [
+              {
+                "appRating": this.contentRating,
+                "comment": commentsList.toString(),
+                "commenttxt": commentDescription.toString()
+              }
+            ]
+          }
+        },
+      }
+      this.telemetryService.interact(interactObj);
       this.telemetryService.feedback(feedbackTelemetry);
       this.toasterService.success(this.resourceService.messages.smsg.m0050);
     }
