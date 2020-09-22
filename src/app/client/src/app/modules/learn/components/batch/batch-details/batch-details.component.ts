@@ -127,7 +127,7 @@ export class BatchDetailsComponent implements OnInit, OnDestroy {
 
     if (this.courseMentor) {
       searchParamsCreator.filters.createdBy = this.userService.userid;
-      searchParamsMentor.filters.mentors = [this.userService.userid];
+      // searchParamsMentor.filters.mentors = [this.userService.userid];
       combineLatest(
         this.courseBatchService.getAllBatchDetails(searchParamsCreator),
         this.courseBatchService.getAllBatchDetails(searchParamsMentor),

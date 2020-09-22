@@ -8,7 +8,8 @@ import * as _ from 'lodash-es';
 import {
   WindowScrollService, ILoaderMessage, PlayerConfig, ICollectionTreeOptions, NavigationHelperService,
   ToasterService, ResourceService, ContentData, ContentUtilsServiceService, ITelemetryShare, ConfigService,
-  ExternalUrlPreviewService } from '@sunbird/shared';
+  ExternalUrlPreviewService
+} from '@sunbird/shared';
 import { IInteractEventObject, IInteractEventEdata, IImpressionEventInput, IEndEventInput, IStartEventInput } from '@sunbird/telemetry';
 import * as TreeModel from 'tree-model';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -21,8 +22,8 @@ import { PopupControlService } from '../../../../../../service/popup-control.ser
 })
 export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewInit {
   /**
-	 * telemetryImpression
-	*/
+   * telemetryImpression
+  */
   telemetryImpression: IImpressionEventInput;
 
   telemetryContentImpression: IImpressionEventInput;
@@ -64,8 +65,8 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
 
   public showCopyLoader: Boolean = false;
   /**
-	 * telemetryShareData
-	*/
+   * telemetryShareData
+  */
   telemetryShareData: Array<ITelemetryShare>;
 
   objectInteract: IInteractEventObject;
@@ -146,12 +147,12 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
       showContentRating: true
     };
     this.mimeTypeFilters = [
-      this.resourceService.frmelmnts.btn.all,
-      this.resourceService.frmelmnts.btn.video,
-      this.resourceService.frmelmnts.btn.interactive,
-      this.resourceService.frmelmnts.btn.docs
+      { text: this.resourceService.frmelmnts.btn.all, value: 'all' },
+      { text: this.resourceService.frmelmnts.btn.video, value: 'video' },
+      { text: this.resourceService.frmelmnts.btn.interactive, value: 'interactive' },
+      { text: this.resourceService.frmelmnts.btn.docs, value: 'docs' }
     ];
-    this.activeMimeTypeFilter = [ this.resourceService.frmelmnts.btn.all ];
+    this.activeMimeTypeFilter = ['all'];
   }
 
   ngOnInit() {
@@ -206,7 +207,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
         context: {
           env: this.route.snapshot.data.telemetry.env,
           cdata: this.dialCode ? [{ id: this.route.snapshot.params.collectionId, type: this.contentType },
-          {id: this.dialCode, type: 'dialCode'} ] : [{ id: this.route.snapshot.params.collectionId, type: this.contentType }]
+          { id: this.dialCode, type: 'dialCode' }] : [{ id: this.route.snapshot.params.collectionId, type: this.contentType }]
         },
         object: {
           id: this.collectionId,
@@ -238,7 +239,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
       this.telemetryContentImpression = {
         context: {
           env: this.route.snapshot.data.telemetry.env,
-          cdata: this.dialCode ? [{id: this.dialCode, type: 'dialCode'} ] : []
+          cdata: this.dialCode ? [{ id: this.dialCode, type: 'dialCode' }] : []
         },
         edata: {
           type: this.route.snapshot.data.telemetry.env,
@@ -268,7 +269,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     }), catchError((error) => {
       console.log(`unable to get player config for content ${id}`, error);
       return error;
-    }), );
+    }));
   }
 
   selectedFilter(event) {
@@ -327,7 +328,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
       this.treeModel.walk((node) => {
         if (node.model.mimeType !== 'application/vnd.ekstep.content-collection') {
           this.contentDetails.push({ id: node.model.identifier, title: node.model.name });
-          this.tocList.push({id: node.model.identifier, title: node.model.name, mimeType: node.model.mimeType});
+          this.tocList.push({ id: node.model.identifier, title: node.model.name, mimeType: node.model.mimeType });
         }
         this.setContentNavigators();
       });
@@ -346,12 +347,12 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
       this.setContentNavigators();
       this.playContent(content);
       if (!isClicked) {
-        const playContentDetails = this.findContentById( this.collectionTreeNodes, content.id);
+        const playContentDetails = this.findContentById(this.collectionTreeNodes, content.id);
         if (playContentDetails.model.mimeType === this.configService.appConfig.PLAYER_CONFIG.MIME_TYPE.xUrl) {
           this.externalUrlPreviewService.generateRedirectUrl(playContentDetails.model);
         }
       }
-        this.windowScrollService.smoothScroll('app-player-collection-renderer', 10);
+      this.windowScrollService.smoothScroll('app-player-collection-renderer', 10);
     } else {
       throw new Error(`Unable to play collection content for ${this.collectionId}`);
     }
@@ -365,11 +366,11 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
         this.collectionId = params.collectionId;
         this.telemetryCdata = [{ id: this.collectionId, type: this.contentType }];
         if (this.dialCode) {
-          this.telemetryCdata.push({id: this.dialCode, type: 'dialCode'});
+          this.telemetryCdata.push({ id: this.dialCode, type: 'dialCode' });
         }
         this.collectionStatus = params.collectionStatus;
         return this.getCollectionHierarchy(params.collectionId);
-      }), )
+      }))
       .subscribe((data) => {
         this.collectionTreeNodes = data;
         this.showLoader = false;
@@ -429,7 +430,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
     this.router.navigate([], navigationExtras);
   }
 
-  callinitPlayer (event) {
+  callinitPlayer(event) {
     // console.log('event---ID---->',event.data.identifier);
     // console.log('activeContent---ID---->',_.get(this.activeContent, 'identifier'))
     if (event.data.identifier !== _.get(this.activeContent, 'identifier')) {
@@ -445,7 +446,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   }
   tocChapterClickHandler(event) {
     if (this.isSelectChapter) {
-      this.isSelectChapter =  false;
+      this.isSelectChapter = false;
     }
     this.callinitPlayer(event);
   }
@@ -453,9 +454,9 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
   getContentRollUp(rollup: string[]) {
     const objectRollUp = {};
     if (rollup) {
-      for (let i = 0; i < rollup.length; i++ ) {
+      for (let i = 0; i < rollup.length; i++) {
         objectRollUp[`l${i + 1}`] = rollup[i];
-    }
+      }
     }
     return objectRollUp;
   }
@@ -501,7 +502,7 @@ export class CollectionPlayerComponent implements OnInit, OnDestroy, AfterViewIn
           uaspec: {
             agent: deviceInfo.browser,
             ver: deviceInfo.browser_version,
-            system: deviceInfo.os_version ,
+            system: deviceInfo.os_version,
             platform: deviceInfo.os,
             raw: deviceInfo.userAgent
           }
