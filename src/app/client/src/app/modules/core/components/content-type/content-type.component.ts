@@ -81,7 +81,7 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
     } else {
       !data.isLoginMandatory ? 
         this.router.navigate([data.anonumousUserRoute.route],
-          { queryParams: { ...params, selectedTab: data.anonumousUserRoute.queryParam } }): null;
+          { queryParams: { ...params, selectedTab: data.anonumousUserRoute.queryParam } }): window.location.href = data.loggedInUserRoute.route ;
     }
   }
 
