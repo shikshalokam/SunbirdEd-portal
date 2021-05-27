@@ -4,6 +4,12 @@ input[type="file"] {
 
 .area {
   position: relative;
+  a {
+    display: inline;
+  }
+  i {
+    font-size: 40px;
+  }
 }
 
 .remove-image {
@@ -33,4 +39,8 @@ input[type="file"] {
   background: #e54e4e;
   top: -10px;
   right: 2px;
+}
+
+.bs-1 {
+  background-color: grey;
 }

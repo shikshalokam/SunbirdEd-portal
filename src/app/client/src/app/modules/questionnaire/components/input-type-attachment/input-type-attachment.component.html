@@ -6,23 +6,23 @@
   (change)="basicUpload($event.target.files)"
   multiple
 />
-<div style="display: flex">
-  <div style="padding: 20px; background-color: grey" (click)="file.click()">
+<div class="d-flex">
+  <div class="bs-1 p-20" (click)="file.click()">
     <i class="plus icon"></i>
   </div>
   <div *ngFor="let item of td" (click)="openFile(item)" class="area">
-    <a class="remove-image" href="#" style="display: inline">&#215;</a>
+    <a class="remove-image" href="#">&#215;</a>
     <div *ngIf="extension(item.name) == 'png'" class="mx-10">
-      <i class="file image outline icon" style="font-size: 40px"></i>
+      <i class="file image outline icon"></i>
     </div>
     <div *ngIf="extension(item.name) == 'jpg'" class="mx-10">
-      <i class="file image outline icon" style="font-size: 40px"></i>
+      <i class="file image outline icon"></i>
     </div>
     <div *ngIf="extension(item.name) == 'jpeg'" class="mx-10">
-      <i class="file image outline icon" style="font-size: 40px"></i>
+      <i class="file image outline icon"></i>
     </div>
     <div *ngIf="extension(item.name) == 'pdf'" class="mx-10">
-      <i class="file pdf outline icon" style="font-size: 40px"></i>
+      <i class="file pdf outline icon"></i>
     </div>
   </div>
 </div>
