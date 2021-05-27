@@ -8,7 +8,8 @@
   "
   [formGroup]="questionnaireForm"
 >
-  <div class="range-value" id="rangeV"></div>
+  <div class="range-value" id="rangeV">{{this.question.value}}</div>
+  
   <input
     id="range"
     type="range"
@@ -19,5 +20,6 @@
     [formControlName]="question?._id"
     class="w-100"
     (change)="onChange($event)"
+    [value]="question.value"
   />
 </div>

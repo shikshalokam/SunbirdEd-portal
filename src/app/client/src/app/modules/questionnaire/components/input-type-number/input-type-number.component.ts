@@ -16,7 +16,7 @@ export class InputTypeNumberComponent implements OnInit {
   ngOnInit() {
     this.questionnaireForm.addControl(
       this.question._id,
-      new FormControl(null, [
+      new FormControl(this.question.value || null, [
         Validators.required,
         this.qService.validate(this.question),
       ])

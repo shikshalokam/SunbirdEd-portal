@@ -9,7 +9,6 @@ export class QuestionnaireService {
 
   validate = (data): ValidatorFn => {
     return (control: AbstractControl): { [key: string]: any } | null => {
-      debugger;
       if (!data.validation.required) {
         return null;
       }
@@ -89,9 +88,13 @@ export class QuestionnaireService {
   }
 
   formatToPayload(currentQuestion, formValues) {
+    let value =
+      currentQuestion.responseType != "matrix"
+        ? currentQuestion.value
+        : formValues[currentQuestion._id];
     return {
       qid: currentQuestion._id,
-      value: formValues[currentQuestion._id],
+      value: value,
       remarks: "", // todo :
       fileName: [], //todo,
       gpsLocation: "",
@@ -110,15 +113,88 @@ export class QuestionnaireService {
     };
   }
 
-  x() {
-    this.validate;
-    alert(this.validate);
-    debugger;
-    let evidence = {
-      externalid: "OB", //todo
-      // answers: answers,
-      // startTime: 1620977187792, //todo
-      // endTime: 1620977187792, //todo
-    };
+  mapSubmissionToAssessment(data) {
+    const assessment = data.assessment;
+
+    for (const evidence of assessment.evidences) {
+      const validSubmission = assessment.submissions[evidence.externalId];
+      if (validSubmission) {
+        evidence.notApplicable = validSubmission.notApplicable;
+        if (evidence.notApplicable) {
+          continue;
+        }
+
+        for (const section of evidence.sections) {
+          for (const question of section.questions) {
+            if (question.responseType === "pageQuestions") {
+              for (const questions of question.pageQuestions) {
+                questions.value =
+                  questions.responseType !== "matrix"
+                    ? validSubmission.answers[questions._id].value
+                    : this.constructMatrixValue(
+                        validSubmission,
+                        questions,
+                        evidence.externalId
+                      );
+                questions.remarks = validSubmission.answers[question._id]
+                  ? validSubmission.answers[question._id].remarks
+                  : "";
+              }
+            } else if (
+              validSubmission.answers &&
+              validSubmission.answers[question._id]
+            ) {
+              question.value =
+                question.responseType !== "matrix"
+                  ? validSubmission.answers[question._id].value
+                  : this.constructMatrixValue(
+                      validSubmission,
+                      question,
+                      evidence.externalId
+                    );
+              question.remarks = validSubmission.answers[question._id]
+                ? validSubmission.answers[question._id].remarks
+                : "";
+            }
+          }
+        }
+      }
+    }
+    return data;
+  }
+
+  constructMatrixValue(validSubmission, matrixQuestion, ecmId) {
+    matrixQuestion.value = [];
+    if (
+      validSubmission.answers &&
+      validSubmission.answers[matrixQuestion._id] &&
+      validSubmission.answers[matrixQuestion._id].value
+    ) {
+      for (const answer of validSubmission.answers[matrixQuestion._id].value) {
+        matrixQuestion.value.push(
+          JSON.parse(JSON.stringify(matrixQuestion.instanceQuestions))
+        );
+      }
+      matrixQuestion.value.forEach((instance, index) => {
+        instance.forEach((question, instanceIndex) => {
+          if (
+            validSubmission.answers[matrixQuestion._id] &&
+            validSubmission.answers[matrixQuestion._id].value[index][
+              question._id
+            ].value
+          ) {
+            question.value =
+              validSubmission.answers[matrixQuestion._id].value[index][
+                question._id
+              ].value;
+            question.remarks =
+              validSubmission.answers[matrixQuestion._id].value[index].remarks;
+          }
+        });
+      });
+      return matrixQuestion.value;
+    } else {
+      return [];
+    }
   }
 }
