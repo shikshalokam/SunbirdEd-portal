@@ -16,7 +16,7 @@ export class InputTypeRadioComponent implements OnInit {
   ngOnInit() {
     this.questionnaireForm.addControl(
       this.question._id,
-      new FormControl(null, Validators.required)
+      new FormControl(this.question.value || null, Validators.required)
     );
 
     this.question.startTime = this.question.startTime
@@ -35,7 +35,6 @@ export class InputTypeRadioComponent implements OnInit {
   onChange(value) {
     this.questionnaireForm.controls[this.question._id].setValue(value);
     this.question.value = value;
-
     this.question.endTime = Date.now();
   }
 }

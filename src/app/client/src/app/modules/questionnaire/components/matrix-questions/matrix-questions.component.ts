@@ -31,6 +31,7 @@ export class MatrixQuestionsComponent implements OnInit {
 
   ngOnInit() {
     this.matrixForm = this.fb.group({});
+    this.questionnaireForm.addControl(this.question._id, new FormArray([]));
   }
 
   addInstances(): void {

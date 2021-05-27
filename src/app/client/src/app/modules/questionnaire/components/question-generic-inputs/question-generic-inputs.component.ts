@@ -1,4 +1,6 @@
 import { Component, Input, OnInit } from "@angular/core";
+import { QuestionnaireService } from "../../questionnaire.service";
+import { ResourceService } from "@sunbird/shared";
 
 @Component({
   selector: "question-generic-inputs",
@@ -8,7 +10,25 @@ import { Component, Input, OnInit } from "@angular/core";
 export class QuestionGenericInputsComponent implements OnInit {
   @Input() questions: any;
   @Input() questionnaireForm: any;
-  constructor() {}
+  attachmentData = { submissionId: this.qService.getSubmissionId() };
+  selectedIndex: any;
+  constructor(
+    public resourceService: ResourceService,
+    private qService: QuestionnaireService
+  ) {}
 
   ngOnInit() {}
+
+  openRemark(data, i) {
+    this.selectedIndex = i;
+    data["isRemarkClicked"] = true;
+  }
+
+  deleteRemarks(data, i) {
+    data["isRemarkClicked"] = false;
+  }
+
+  saveClicked(event, data) {
+    data["isRemarkClicked"] = false;
+  }
 }

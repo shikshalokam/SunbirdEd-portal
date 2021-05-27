@@ -9,6 +9,7 @@ import { FormGroup, FormBuilder } from "@angular/forms";
 import { QuestionnaireService } from "../questionnaire.service";
 import { ActivatedRoute } from "@angular/router";
 import { ObservationService } from "@sunbird/core";
+import { Location } from "@angular/common";
 
 @Component({
   selector: "app-questionnaire",
@@ -34,7 +35,8 @@ export class QuestionnaireComponent implements OnInit {
     public resourceService: ResourceService,
     private activatedRoute: ActivatedRoute,
     private config: ConfigService,
-    private observationService: ObservationService
+    private observationService: ObservationService,
+    private location:Location
   ) {}
 
   ngOnInit() {
@@ -57,6 +59,12 @@ export class QuestionnaireComponent implements OnInit {
     this.observationService.post(paramOptions).subscribe(
       (data) => {
         this.assessmentInfo = data.result;
+        this.assessmentInfo = this.qService.mapSubmissionToAssessment(
+          this.assessmentInfo
+        );
+        this.qService.setSubmissionId(
+          this.assessmentInfo.assessment.submissionId
+        );
         this.evidence = data.result.assessment.evidences[0];
         this.evidence.startTime = Date.now();
         this.sections = this.evidence.sections;
@@ -99,35 +107,31 @@ export class QuestionnaireComponent implements OnInit {
   }
 
   onSubmit(save?) {
-    let payload = this.qService.getEvidenceData(
+    let evidenceData = this.qService.getEvidenceData(
       this.evidence,
       this.questionnaireForm.value
     );
 
-    console.log(payload);
+    save ? (evidenceData["status"] = "draft") : null;
+    let payload = { evidence: evidenceData };
+
+    this.submitEvidence(payload);
   }
 
-  submitEvidence() {
+  submitEvidence(payload) {
     const paramOptions = {
       url:
-        this.config.urlConFig.URLS.OBSERVATION_SUBMISSION_UPDATE +
+        this.config.urlConFig.URLS.OBSERVATION.OBSERVATION_SUBMISSION_UPDATE +
         `${this.assessmentInfo.assessment.submissionId}`,
-      data: {
-        block: "0abd4d28-a9da-4739-8132-79e0804cd73e",
-        district: "2f76dcf5-e43b-4f71-a3f2-c8f19e1fce03",
-        role: "DEO",
-        school: "8be7ecb5-4e35-4230-8746-8b2694276343",
-        state: "bc75cc99-9205-463e-a722-5326857838f8",
-      },
+      data: payload,
     };
-    // this.observationService.post(paramOptions).subscribe(
-    //   (data) => {
-    //     this.evidence = data.result.assessment.evidences[0];
-    //     this.evidence.startTime = Date.now();
-    //     this.sections = this.evidence.sections;
-    //   },
-    //   (error) => {}
-    // );
+    this.observationService.post(paramOptions).subscribe(
+      (data) => {
+        console.log(data);
+        this.location.back()
+      },
+      (error) => {}
+    );
   }
 
   questions = [

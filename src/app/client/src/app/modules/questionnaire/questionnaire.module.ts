@@ -5,10 +5,10 @@ import { QuestionnaireRoutingModule } from "./questionnaire-routing.module";
 import { SharedModule } from "@sunbird/shared";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { SuiModule } from "ng2-semantic-ui";
-import { QuestionnaireService } from "./questionnaire.service";
 import {
   InputTypeAttachmentComponent, InputTypeCheckboxComponent, InputTypeDatePickerComponent, InputTypeNumberComponent,
-  InputTypeRadioComponent, InputTypeRangeComponent, InputTypeTextComponent, PageQuestionsComponent, MatrixQuestionsComponent, QuestionGenericInputsComponent
+  InputTypeRadioComponent, InputTypeRangeComponent, InputTypeTextComponent, PageQuestionsComponent, MatrixQuestionsComponent, QuestionGenericInputsComponent,
+  RemarksComponent
 } from './components';
 
 @NgModule({
@@ -23,8 +23,8 @@ import {
     PageQuestionsComponent,
     MatrixQuestionsComponent,
     QuestionGenericInputsComponent,
+    RemarksComponent,
     InputTypeAttachmentComponent,
-
   ],
   imports: [
     CommonModule,
