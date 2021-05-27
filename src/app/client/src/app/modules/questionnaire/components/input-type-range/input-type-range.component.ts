@@ -12,9 +12,11 @@ export class InputTypeRangeComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
+    console.log("matrix");
+    console.log(this.question);
     this.questionnaireForm.addControl(
       this.question._id,
-      new FormControl(0, Validators.required)
+      new FormControl(this.question.value || 0, Validators.required)
     );
     this.question.startTime = this.question.startTime
       ? this.question.startTime

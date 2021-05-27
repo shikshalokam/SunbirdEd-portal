@@ -23,9 +23,8 @@ export class InputTypeDatePickerComponent implements OnInit {
   }
 
   onChange(e) {
-    let value = e.target.value;
+    let value = e;
     this.question.value = value;
-
     this.question.endTime = Date.now();
   }
 }

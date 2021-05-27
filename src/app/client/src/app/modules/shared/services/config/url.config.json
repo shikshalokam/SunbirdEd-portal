@@ -359,7 +359,8 @@
       "GET_ASSESSMENT": "v2/observations/assessment/"
     },
     "KENDRA": {
-      "TARGETTED_ENTITY_TYPES": "v1/users/targetedEntity/"
+      "TARGETTED_ENTITY_TYPES": "v1/users/targetedEntity/",
+      "PRESIGNED_URLS": "v1/cloud-services/files/preSignedUrls"
     }
   }
 }
