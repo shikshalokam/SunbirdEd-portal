@@ -1,11 +1,17 @@
 import { Injectable } from "@angular/core";
 import { AbstractControl, ValidatorFn } from "@angular/forms";
+import { ConfigService } from "@sunbird/shared";
+import { KendraService } from "@sunbird/core";
 
 @Injectable({
   providedIn: "root",
 })
 export class QuestionnaireService {
-  constructor() {}
+  private _submissionId: any;
+  constructor(
+    private config: ConfigService,
+    private kendraService: KendraService
+  ) {}
 
   validate = (data): ValidatorFn => {
     return (control: AbstractControl): { [key: string]: any } | null => {
@@ -196,5 +202,20 @@ export class QuestionnaireService {
     } else {
       return [];
     }
+  }
+
+  setSubmissionId(submissionId: any) {
+    this._submissionId = submissionId;
+  }
+  getSubmissionId() {
+    return this._submissionId;
+  }
+
+  getPreSingedUrls(payload) {
+    const paramOptions = {
+      url: this.config.urlConFig.URLS.KENDRA.PRESIGNED_URLS,
+      data: payload,
+    };
+    return this.kendraService.post(paramOptions);
   }
 }

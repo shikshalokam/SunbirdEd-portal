@@ -9,6 +9,7 @@ import { FormGroup, FormBuilder } from "@angular/forms";
 import { QuestionnaireService } from "../questionnaire.service";
 import { ActivatedRoute } from "@angular/router";
 import { ObservationService } from "@sunbird/core";
+import { Location } from "@angular/common";
 
 @Component({
   selector: "app-questionnaire",
@@ -34,7 +35,8 @@ export class QuestionnaireComponent implements OnInit {
     public resourceService: ResourceService,
     private activatedRoute: ActivatedRoute,
     private config: ConfigService,
-    private observationService: ObservationService
+    private observationService: ObservationService,
+    private location:Location
   ) {}
 
   ngOnInit() {
@@ -57,9 +59,12 @@ export class QuestionnaireComponent implements OnInit {
     this.observationService.post(paramOptions).subscribe(
       (data) => {
         this.assessmentInfo = data.result;
-        this.assessmentInfo = this.qService.mapSubmissionToAssessment(this.assessmentInfo)
-        console.log('assessmentInfo')
-        console.log(this.assessmentInfo)
+        this.assessmentInfo = this.qService.mapSubmissionToAssessment(
+          this.assessmentInfo
+        );
+        this.qService.setSubmissionId(
+          this.assessmentInfo.assessment.submissionId
+        );
         this.evidence = data.result.assessment.evidences[0];
         this.evidence.startTime = Date.now();
         this.sections = this.evidence.sections;
@@ -123,6 +128,7 @@ export class QuestionnaireComponent implements OnInit {
     this.observationService.post(paramOptions).subscribe(
       (data) => {
         console.log(data);
+        this.location.back()
       },
       (error) => {}
     );

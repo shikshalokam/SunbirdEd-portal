@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from "@angular/core";
+import { QuestionnaireService } from "../../questionnaire.service";
 
 @Component({
   selector: "question-generic-inputs",
@@ -8,7 +9,8 @@ import { Component, Input, OnInit } from "@angular/core";
 export class QuestionGenericInputsComponent implements OnInit {
   @Input() questions: any;
   @Input() questionnaireForm: any;
-  constructor() {}
+  attachmentData = { submissionId: this.qService.getSubmissionId() };
+  constructor(private qService: QuestionnaireService) {}
 
   ngOnInit() {}
 }
