@@ -8,6 +8,7 @@ import { ConfigService, ResourceService } from '@sunbird/shared';
 })
 export class SubmissionsComponent implements OnInit {
     @Input() submissions;
+    @Input() allowMultipleAssessemts;
     showPopOver = true;
     @Output() selectedSubmission = new EventEmitter();
     @Output() onAction = new EventEmitter();
@@ -31,6 +32,10 @@ export class SubmissionsComponent implements OnInit {
         this.selectedSubmission.emit(data);
     }
     actionEvent(data, type) {
+<<<<<<< HEAD
        this.onAction.emit({action:type,data:data})
+=======
+        this.onAction.emit({action:type,data:data})
+>>>>>>> release-4.0.0_ML_4
     }
 }
