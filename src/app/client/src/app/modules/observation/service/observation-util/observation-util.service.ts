@@ -166,4 +166,19 @@ export class ObservationUtilService {
     };
     return obj;
   }
+
+   getPopoverActions() {
+      let actions = [{
+        name: this.resourceService.frmelmnts.lbl.edit,
+        icon: 'pencil alternate large icon',
+        type: 'edit'
+      },
+      {
+        name: this.resourceService.frmelmnts.lbl.delete,
+        icon: 'trash  large icon',
+        type: 'delete'
+      }];
+      return actions;
+  }
+
 }
