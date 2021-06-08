@@ -4,3 +4,4 @@ export * from './add-entity/add-entity.component';
 export * from './submissions/submission.component';
 export * from './entity-list/entity-list.component';
 export * from './edit-submission/edit-submission.component';
+export * from './observation-without-rubric/observation-without-rubric.component';

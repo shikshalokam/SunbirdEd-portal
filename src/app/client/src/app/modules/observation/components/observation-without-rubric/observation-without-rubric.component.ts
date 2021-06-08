@@ -1,13 +1,12 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ConfigService, ResourceService } from '@sunbird/shared';
 import { ObservationUtilService } from "../../service";
-
 @Component({
-    selector: 'submission',
-    templateUrl: './submission.component.html',
-    styleUrls: ['./submission.component.scss']
+    selector: 'observationWithoutRubric',
+    templateUrl: './observation-without-rubric.component.html',
+    styleUrls: ['./observation-without-rubric.component.scss']
 })
-export class SubmissionsComponent implements OnInit {
+export class ObservationWithoutRubricComponent implements OnInit {
     @Input() submission;
     @Input() allowMultipleAssessemts;
     showPopOver = true;
@@ -18,18 +17,18 @@ export class SubmissionsComponent implements OnInit {
         private observationUtil: ObservationUtilService,
         public resourceService: ResourceService,
     ) { }
-    ngOnInit() { 
+    ngOnInit() {
         this.getMenus();
     }
-
     getMenus() {
         this.actions = this.observationUtil.getPopoverActions();
+        console.log(this.actions, "this.actions");
     }
-    open(sbnum,data) {
+    open(sbnum, data) {
         data.submissionNumber = sbnum;
         this.selectedSubmission.emit(data);
     }
     actionEvent(data, type) {
-        this.onAction.emit({action:type,data:data})
+        this.onAction.emit({ action: type, data: data })
     }
 }

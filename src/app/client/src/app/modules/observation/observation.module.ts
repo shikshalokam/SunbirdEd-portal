@@ -15,7 +15,7 @@ import { ContentSearchModule } from '@sunbird/content-search';
 import { TranslateModule } from '@ngx-translate/core';
 import {
   AddEntityComponent, SubmissionsComponent, ObservationListingComponent, ObservationDetailsComponent,
-  EntityListComponent, EditSubmissionComponent
+  EntityListComponent, EditSubmissionComponent, ObservationWithoutRubricComponent
 } from './components';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { LocationModule } from '../../plugins/location/location.module';
@@ -23,7 +23,7 @@ import { ObservationUtilService } from './service';
 
 @NgModule({
   declarations: [ObservationListingComponent, ObservationDetailsComponent, AddEntityComponent, SubmissionsComponent,
-    EntityListComponent, EditSubmissionComponent],
+    EntityListComponent, EditSubmissionComponent,ObservationWithoutRubricComponent ],
   imports: [
     CommonModule,
     ObservationRoutingModule,
