@@ -13,7 +13,7 @@ import * as _ from 'lodash-es';
   providedIn: "root",
 })
 export class QuestionnaireService {
-  private _submissionId: string;
+  _submissionId: string;
   constructor(
     private config: ConfigService,
     private kendraService: KendraService,
@@ -114,7 +114,7 @@ export class QuestionnaireService {
       let perQuestionData = this.formatToPayload(currentQuestion, formValues);
       answers[currentQuestion._id] = perQuestionData;
     }
-
+    
     return answers;
   }
 
