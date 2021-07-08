@@ -8,9 +8,11 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { UsageService } from '../usage/usage.service';
 import { map, catchError, pluck, mergeMap, shareReplay } from 'rxjs/operators';
 import * as _ from 'lodash-es';
-import { Observable, of, forkJoin, throwError } from 'rxjs';
+import { Observable, of, forkJoin, throwError,concat } from 'rxjs';
 import * as moment from 'moment';
 import { UUID } from 'angular2-uuid';
+// import { response } from 'src/app/modules/certificate/components/certificate-configuration/certificate-configuration.component.spec.data';
+import { values } from 'lodash';
 
 const PRE_DEFINED_PARAMETERS = ['$slug', '$board', '$state', '$channel'];
 
@@ -36,10 +38,11 @@ export class ReportService {
     return this.usageService.getData(filePath).pipe(
       map(configData => {
         return {
+          loaded:true,
           result: _.get(configData, 'result'),
           ...(id && { id })
         };
-      })
+      }),catchError(error => of({ loaded:false }))
     );
   }
 
@@ -51,24 +54,69 @@ export class ReportService {
     const apiCalls = _.map(dataSources, (source: IDataSource) => {
       return this.fetchDataSource(_.get(source, 'path'), _.get(source, 'id'));
     });
+
+    
+
+   
     return forkJoin(...apiCalls).pipe(
       mergeMap(response => {
+
+        console.log("res",response);
+        response = response.filter(function(item){ if(item ){ return item.loaded= true } });
+
+        // response = _.omitBy(response, _.isNil);
+        console.log("res",response);
+       
+
+        // response.loaded =true;
         return this.getFileMetaData(dataSources).pipe(
           map(metadata => {
             return _.map(response, res => {
               res.lastModifiedOn = _.get(metadata[res.id], 'lastModified');
               return res;
             });
+          }),catchError(err => {
+            console.log("er",err);
+            return throwError(err);
+
           })
+
         );
-      }),
-      catchError(err => {
-        if (err.status === 404) {
-          return throwError({ messageText: 'messages.stmsg.reportNotReady' });
-        }
-        return throwError(err);
-      })
+
+      },
+      // catchError(() => of(null))
+      ),
+      // catchError(()=>{
+      //   console.log("res",response);
+        
+      //   // if (err.status === 404) {
+
+      //     allresp.push({ failed:true,messageText: 'messages.stmsg.reportNotReady' });
+      //     return of(allresp);
+      //   // }
+      //   // return throwError(err);
+      //   //  of(null);
+
+
+      
+      // })
+
+      
     );
+    // return joinedWithIntervalCompleting$.subscribe(data=>{
+    //   console.log("data",data);
+    //   return of(data);
+    // });
+  
+    // 4
+
+    // console.log("res -----",fresposne);
+    //   return fresposne;
+
+  }
+
+  public newfunction(apiCalls,dataSources){
+   
   }
 
   public fetchReportById(id, hash?: string): Observable<IReportsApiResponse> {
@@ -180,8 +228,11 @@ export class ReportService {
         chartObj.chartConfig['id']  = UUID.UUID();
       }
       chartObj.downloadUrl = downloadUrl;
+
+      console.log("data, chart",data,"------------",chart)
       chartObj.chartData = dataSource ? this.getChartData(data, chart) :
         _.get(this.getDataSourceById(data, reportLevelDataSourceId || 'default'), 'data');
+      console.log("chartObj.chartData ",chartObj.chartData ); 
       chartObj.lastUpdatedOn = _.get(data, 'metadata.lastUpdatedOn') ||
         this.getLatestLastModifiedOnDate(data, dataSource || { ids: [reportLevelDataSourceId || 'default'] });
       if (chartType && _.toLower(chartType) === 'map') {
