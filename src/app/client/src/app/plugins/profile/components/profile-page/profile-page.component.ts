@@ -27,7 +27,7 @@ import {CacheService} from 'ng2-cache-service';
 import {takeUntil} from 'rxjs/operators';
 import { CertificateDownloadAsPdfService } from 'sb-svg2pdf';
 import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
-import { FieldConfig, FieldConfigOption } from 'common-form-elements';
+import { FieldConfig, FieldConfigOption } from 'common-form-elements-v9';
 
 @Component({
   templateUrl: './profile-page.component.html',
@@ -95,6 +95,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
   persona: {};
   subPersona: string;
   isConnected = true;
+  showFullScreenLoader: boolean = false;
 
   constructor(@Inject('CS_COURSE_SERVICE') private courseCService: CsCourseService, private cacheService: CacheService,
   public resourceService: ResourceService, public coursesService: CoursesService,
@@ -131,6 +132,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getCustodianOrgUser();
     this.userSubscription = this.userService.userData$.subscribe((user: IUserData) => {
       /* istanbul ignore else */
+      this.showFullScreenLoader = false;
       if (user.userProfile) {
         this.userProfile = user.userProfile;
         const role: string = (!this.userProfile.profileUserType.type ||
@@ -213,14 +215,18 @@ export class ProfilePageComponent implements OnInit, OnDestroy, AfterViewInit {
           orgList.push(org);
         }
       }
-      _.forEach(org.roles, (value, key) => {
-        if (value !== 'PUBLIC') {
-          const roleName = _.find(this.userProfile.roleList, { id: value });
-          if (roleName) {
-            this.roles.push(roleName['name']);
-          }
+    });
+    let userRoles;
+    if (_.get(this.userProfile, 'roles') && !_.isEmpty(this.userProfile.roles)) {
+      userRoles = _.map(this.userProfile.roles, 'role');
+    }
+    _.forEach(userRoles, (value, key) => {
+      if (value !== 'PUBLIC') {
+        const roleName = _.find(this.userProfile.roleList, { id: value });
+        if (roleName) {
+          this.roles.push(roleName['name']);
         }
-      });
+      }
     });
     this.roles = _.uniq(this.roles).sort();
     orgList = _.sortBy(orgList, ['modifiedJoinDate']);
@@ -623,6 +629,17 @@ private async getSubPersonaConfig(subPersonaCode: string, persona: string, userL
   const subPersonaFieldConfigOption = (subPersonaConfig.templateOptions.options as FieldConfigOption<any>[]).
               find(option => option.value === subPersonaCode);
   return subPersonaFieldConfigOption ? subPersonaFieldConfigOption.label : undefined;
+}
+
+public onLocationModalClose() {
+  this.showEditUserDetailsPopup = !this.showEditUserDetailsPopup;
+  this.showFullScreenLoader = true;
+  setTimeout(()=> {
+    if(this.showFullScreenLoader){
+      this.showFullScreenLoader = false;
+      this.toasterService.error(this.resourceService.messages.emsg.m0005);
+    }
+  }, 5000)
 }
 
 }

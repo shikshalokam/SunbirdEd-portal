@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormService, UserService } from './../../services';
 import * as _ from 'lodash-es';
-import { LayoutService, ResourceService, UtilService,IUserData} from '@sunbird/shared';
+import { LayoutService, ResourceService, UtilService,IUserData, NavigationHelperService, InterpolatePipe} from '@sunbird/shared';
 import { Router, ActivatedRoute } from '@angular/router';
 import { combineLatest, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -16,12 +16,14 @@ import { TelemetryService } from '@sunbird/telemetry';
 export class ContentTypeComponent implements OnInit, OnDestroy {
   @Output() closeSideMenu = new EventEmitter<any>();
   @Input() layoutConfiguration;
+  @Input() showBackButton = false;
   contentTypes;
   selectedContentType;
   isDesktopApp = false;
   public unsubscribe$ = new Subject<void>();
   subscription: any;
   userType:any;
+  returnTo:string
   constructor(
     public formService: FormService,
     public resourceService: ResourceService,
@@ -31,6 +33,7 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
     public activatedRoute: ActivatedRoute,
     public layoutService: LayoutService,
     private utilService: UtilService,
+    public navigationhelperService: NavigationHelperService,
   ) {
     this.subscription = this.utilService.currentRole.subscribe(async (result) => {
       if (result) {
@@ -182,5 +185,4 @@ export class ContentTypeComponent implements OnInit, OnDestroy {
   isLayoutAvailable() {
     return this.layoutService.isLayoutAvailable(this.layoutConfiguration);
   }
-
 }

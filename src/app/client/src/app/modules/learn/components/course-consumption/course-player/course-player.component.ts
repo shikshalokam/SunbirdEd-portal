@@ -1,6 +1,6 @@
 import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { TocCardType } from '@project-sunbird/common-consumption-v8';
+import { TocCardType } from '@project-sunbird/common-consumption-v9';
 import { CoursesService, PermissionService, UserService, GeneraliseLabelService } from '@sunbird/core';
 import {
   ConfigService, ExternalUrlPreviewService, ICollectionTreeOptions, NavigationHelperService,
@@ -15,7 +15,7 @@ import * as TreeModel from 'tree-model';
 import { PopupControlService } from '../../../../../service/popup-control.service';
 import { CourseBatchService, CourseConsumptionService, CourseProgressService } from './../../../services';
 import { ContentUtilsServiceService, ConnectionService } from '@sunbird/shared';
-import { MimeTypeMasterData } from '@project-sunbird/common-consumption-v8/lib/pipes-module/mime-type';
+import { MimeTypeMasterData } from '@project-sunbird/common-consumption-v9/lib/pipes-module/mime-type';
 import dayjs from 'dayjs';
 import { NotificationServiceImpl } from '../../../../notification/services/notification/notification-service-impl';
 import { CsCourseService } from '@project-sunbird/client-services/services/course/interface';
@@ -257,8 +257,10 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
       setTimeout(() => {
         if (_.get(event, 'event') === 'issueCert' && _.get(event, 'value') === 'yes') {
           this.createdBatchId = _.get(event, 'batchId');
-          this.showConfirmationPopup = true;
-          this.popupMode = _.get(event, 'mode');
+          if(!_.get(event, 'isCertInBatch')) {
+            this.showConfirmationPopup = true;
+            this.popupMode = _.get(event, 'mode');
+          }
         }
       }, 1000);
     });
@@ -566,7 +568,7 @@ export class CoursePlayerComponent implements OnInit, OnDestroy {
 
           /* istanbul ignore else */
           if (_.get(unit, 'children.length')) {
-            flattenDeepContents = this.courseConsumptionService.flattenDeep(unit.children).filter(item => item.mimeType !== 'application/vnd.ekstep.content-collection');
+            flattenDeepContents = this.courseConsumptionService.flattenDeep(unit.children).filter(item => item.mimeType !== 'application/vnd.ekstep.content-collection' && item.mimeType !== 'application/vnd.sunbird.question');
             /* istanbul ignore else */
             if (this.contentStatus.length) {
               consumedContents = flattenDeepContents.filter(o => {

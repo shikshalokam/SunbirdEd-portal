@@ -92,7 +92,7 @@ export class UtilService {
       content['topic'] = this.getTopicSubTopic('topic', data.content.topic);
       content['subTopic'] = this.getTopicSubTopic('subTopic', data.content.topic);
       content['contentType'] = _.get(data.content, 'contentType') || '';
-      content['orgDetails'] = _.get(data.content, 'orgDetails') || {};
+      content['organisation'] = _.get(data.content, 'orgDetails.orgName') || {};
       content = { ...content, ..._.pick(data.content, ['subject', 'medium', 'gradeLevel']) };
     }
 
@@ -433,6 +433,31 @@ export class UtilService {
     let origin = (<HTMLInputElement>document.getElementById('baseUrl'))
       ? (<HTMLInputElement>document.getElementById('baseUrl')).value : document.location.origin;
     return origin;
+  }
+
+  /**
+ * Parse the nested object & convert to flattern object(key, value)
+ * @param {JSON object} data 
+ * ex: {user: {id: 1, name: xyz}} it will convert to {user.id: 1, user.name:}
+ */
+   flattenObject(jsonObj) {
+    let toReturn = {};
+
+    for (let i in jsonObj) {
+      if (!jsonObj.hasOwnProperty(i)) continue;
+
+      if ((typeof jsonObj[i]) == 'object' && jsonObj[i] !== null) {
+        let flatObject = this.flattenObject(jsonObj[i]);
+        for (let x in flatObject) {
+          if (!flatObject.hasOwnProperty(x)) continue;
+
+          toReturn[i + '.' + x] = flatObject[x];
+        }
+      } else {
+        toReturn[i] = jsonObj[i];
+      }
+    }
+    return toReturn;
   }
 
   getRandomColor(colorSet) {
